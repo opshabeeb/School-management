@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views import View
-from .forms import ContactForm, UserForm, LoginForm,UpdateUserForm,StudentForm,UpdateBookForm,AddLibraryHistoryForm,FeeHistoryForm
+from .forms import ContactForm, CreateUserForm, SignupForm, LoginForm,UpdateUserForm,StudentForm,UpdateBookForm,AddLibraryHistoryForm,FeeHistoryForm
 from django.views.generic import TemplateView,CreateView,UpdateView,DeleteView
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -50,11 +50,11 @@ class SignupView(View):
     template_name = 'registration/signup.html'
     
     def get(self, request):
-        form = UserForm()
+        form = SignupForm()
         return render(request, self.template_name, {'form': form})
     
     def post(self, request):
-        form = UserForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
@@ -78,7 +78,7 @@ class AdminDashborad(RoleRequiredMixin,TemplateView):
     
 class UserCreateView(RoleRequiredMixin,CreateView):
     model=User
-    form_class=UserForm
+    form_class=CreateUserForm
     template_name='admin/CreateUser.html'
     success_url= reverse_lazy('admindashboard')
     allowed_roles=['admin']

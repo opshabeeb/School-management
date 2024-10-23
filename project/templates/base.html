@@ -10,7 +10,7 @@
   <body>
     {% comment %} header {% endcomment %}
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+    <nav class="navbar navbar-expand-lg  " style="background-color: rgb(232, 109, 21);">
         <div class="container-fluid d-flex ">
           <a class="navbar-brand fw-bold fs-2" href="#">SCHOOL</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,17 +19,17 @@
           <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active fw-bold me-2" aria-current="page" href="{% url "home" %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url "Contact" %}">Contact</a>
+                <a class="nav-link fw-bold me-2" href="{% url "Contact" %}">Contact</a>
               </li>
               
               {% if user.is_authenticated %}
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <li class='nav-item mt-md-2'>
-            <button type="submit" class="nav-link" style="background:none; border:none; padding:0; cursor:pointer;">
+            <button type="submit" class="nav-link fw-bold me-2" style="background:none; border:none; padding:0; cursor:pointer;">
                 Logout
             </button>
         </li>
@@ -37,24 +37,24 @@
               
           {% else %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-link fw-bold me-2" href="{% url 'login' %}">Login</a>
         
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                <a class="nav-link fw-bold me-2" href="{% url 'signup' %}">Sign Up</a>
               </li>
               {% endif %}
               {% if user.is_superuser or user.role == "admin" %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'admindashboard' %}">Admin Dashboard</a>
+                <a class="nav-link fw-bold me-2" href="{% url 'admindashboard' %}">Admin Dashboard</a>
               </li>
               {% elif user.role == 'staff' %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'staff_dashboard' %}">Staff Dashboard</a>
+                <a class="nav-link fw-bold me-2" href="{% url 'staff_dashboard' %}">Staff Dashboard</a>
               </li>
               {% elif user.role == 'librarian' %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'librarian_dashboard' %}">librarian Dashboard</a>
+                <a class="nav-link fw-bold me-2" href="{% url 'librarian_dashboard' %}">librarian Dashboard</a>
               </li>
 
               {% endif %}

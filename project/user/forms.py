@@ -8,15 +8,27 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class UserForm(UserCreationForm):
+class SignupForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username','email', 'password1', 'password2']
         
     def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
+        super(SignupForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username','email','role', 'password1', 'password2']
+        
+    def __init__(self, *args, **kwargs):
+        super(CreateUserForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+    
 
 class UpdateUserForm(forms.ModelForm):
     class Meta:
