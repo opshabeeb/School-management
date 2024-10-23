@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Books List</h2>
+        <!-- Add Book Button to trigger the modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+            Add Book
+        </button>
+    </div>
+
+    <!-- Books Table -->
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Publication Date</th>
+                <th>Available Copies</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.get_category_display }}</td>
+                <td>{{ book.publication_date }}</td>
+                <td>{{ book.available_copies }}</td>
+                <td>
+                    <a href="{% url "editbook" book.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url "deletebook" book.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No books available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Book Modal -->
+<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'addbook' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="bookTitle" class="form-label">Book Title</label>
+                        <input type="text" class="form-control" name="title" id="bookTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bookAuthor" class="form-label">Author</label>
+                        <input type="text" class="form-control" name="author" id="bookAuthor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bookCategory" class="form-label">Category</label>
+                        <select class="form-control" name="category" id="bookCategory" required>
+                            <option value="fiction">Fiction</option>
+                            <option value="nonfiction">Non-fiction</option>
+                            <option value="mystery">Mystery</option>
+                            <option value="biography">Biography</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                            <option value="romance">Romance</option>
+                            <option value="thriller">Thriller</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="publicationDate" class="form-label">Publication Date</label>
+                        <input type="date" class="form-control" name="publication_date" id="publicationDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="availableCopies" class="form-label">Available Copies</label>
+                        <input type="number" class="form-control" name="available_copies" id="availableCopies" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

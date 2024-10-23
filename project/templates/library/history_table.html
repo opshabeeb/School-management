@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div >
+
+        <h2 class="text-center mb-4">Library History</h2>
+        
+        
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+           <a href="{% url "booktable" %}" class="text-decoration-none"><button type="button" class="btn btn-primary">Book Datas</button></a> 
+           <a href="{% url "add_library" %}"><button type="button" class="btn btn-primary">Add History</button></a> 
+        </div>
+        
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>SL NO</th>
+                <th>Student Name</th>
+                <th>Book Title</th>
+                <th>Status</th>
+                <th>Borrowed Date</th>
+                <th>Returned Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for history in l_history %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{history.student_name}}</td>
+                <td>{{history.book}}</td>
+                <td>{{history.status}}</td>
+                <td>{{history.borrowed_date}}</td>
+                <td>{{history.returned_date}}</td>
+                <td>
+                    {% if history.status == 'borrowed' %}
+        <form action="{% url 'mark_as_returned' history.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Mark as Returned</button>
+        </form>
+        {% endif %}
+                   <a href="{% url "update_history" history.id %}"><button class="btn btn-primary btn-sm">Edit</button></a> 
+                    <a href="{% url "delete_history" history.id %}"><button class="btn btn-danger btn-sm">Delete</button></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No Library History Available.</td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.mark-as-returned').click(function() {
+        const historyId = $(this).data('id');
+        
+        $.ajax({
+            type: 'POST',
+            url: `/mark_as_returned/${historyId}/`,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'  // Ensure CSRF token is sent
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);
+                    location.reload();  // Optionally reload the page to see the updated status
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred while marking the book as returned.');
+            }
+        });
+    });
+});
+</script>
+
+
+{% endblock content %}
+

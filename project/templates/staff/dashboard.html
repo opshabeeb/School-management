@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+"
+<div class="container mt-5" style="min-height: 100vh;">
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card border-light shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-danger">Staff Dashboard</h5>
+                    <img 
+                        src="https://cdn-icons-png.flaticon.com/128/2202/2202112.png" 
+                        alt="Admin Avatar" 
+                        class="rounded-circle mb-3" 
+                        style="width: 100px; height: 100px;"  
+                    />
+                    <h6 class="card-subtitle mb-2 text-muted">Name: {{ user.username }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Role: {{ user.role }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        
+        <div class="col-md-12">
+    
+            <a href="{% url "feehistory" %}">
+                <div class="card bg-primary shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Fees History</h5>
+                        
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        
+
+        <div class="col-md-6 mb-4">
+            <div class="card border-success shadow-sm" data-toggle="collapse" data-target="#studentsTable">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-check text-success" style="font-size: 50px;"></i>
+                    <h5 class="card-title">Students</h5>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card border-success shadow-sm" data-toggle="collapse" data-target="#libraryTable">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-check text-success" style="font-size: 50px;"></i>
+                    <h5 class="card-title">Library History</h5>
+                    
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+    </div>
+
+
+    <div id="studentsTable" class="collapse">
+        <h3 class="mt-4">Students Table</h3>
+        <div class="d-flex justify-content-end my-3">
+            <a href={% url "staff_add_student" %}><button class="btn btn-success">Add Student</button></a> 
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>SL NO</th>
+                    <th>Ad No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>Phone No</th>
+                    <th>Class</th>
+                    <th>Div</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td>{{ student.admission_no }}</td>
+                    <td>{{ student.full_name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.date_of_birth }}</td>
+                    <td>{{ student.phone_number }}</td>
+                    <td>{{ student.student_class }}</td>
+                    <td>{{ student.division }}</td>
+                    <td class="d-flex justify-content-between">
+                        <a href="{% url "staff_update_student" student.id %}">
+                            <button class="btn btn-info">Edit</button>
+                        </a>
+                        <a href="{% url "staff_delete_student" student.id %}">
+                            <button class="btn btn-danger">Delete</button>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="libraryTable" class="collapse">
+        <h3 class="mt-4">library history Table</h3>
+        
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>SL NO</th>
+                    <th>Student Name</th>
+                    <th>Book Title</th>
+                    <th>Status</th>
+                    <th>Borrowed Date</th>
+                    <th>Returned Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in library %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ record.student_name.full_name }}</td>
+                    <td>{{ record.book.title }}</td>
+                    <td>{{ record.get_status_display }}</td>
+                    <td>{{ record.borrowed_date|date:"Y-m-d H:i" }}</td>
+                    <td>{% if record.returned_date %}{{ record.returned_date|date:"Y-m-d H:i" }}{% else %}N/A{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+
+    
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // When a card is clicked
+        $('.card').click(function() {
+            // Collapse all other tables
+            $('.collapse').collapse('hide');
+            // Show the targeted table
+            const targetTable = $(this).data('target');
+            $(targetTable).collapse('toggle');
+        });
+    });
+</script>
+
+{% endblock content %}

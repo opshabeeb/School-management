@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+    <div class="text-center">
+        <h2>Confirm Delete</h2>
+        <h4>Are you sure you want to delete library history of <strong>{{ history_to_delete.book }} by {{history_to_delete.student_name  }}</strong>?</h4>
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'admindashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

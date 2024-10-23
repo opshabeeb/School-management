@@ -1,0 +1,33 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Environments
+.env
+.venv
+venv/
+ENV/
+env/
+.envrc
+.DS_Store
+
+# Django migrations
+*/migrations/
+*.pyc
+
+# Media and static files
+/media/
+/staticfiles/
+
+# Node modules if you are using npm
+node_modules/
