@@ -1,12 +1,13 @@
 from django.urls import path,include
 from .views import *
 from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('home',HomeView.as_view(),name='home'),
     path('',LoginView.as_view(),name='login'),
     path('signup/',SignupView.as_view(),name='signup'),
-    path('logout/',SignupView.as_view(),name='logout'),
+    path('logout/',LogoutView.as_view(),name='logout'),
     
     
     path('admin_dashboard/',AdminDashborad.as_view(),name='admindashboard'),
